@@ -28,7 +28,7 @@ export function LoginForm({
         <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
-            {isSignUp && (
+            {!isSignUp && (
                 <a
                 href="#"
                 className="ml-auto text-sm underline-offset-4 hover:underline"
@@ -40,7 +40,7 @@ export function LoginForm({
           
           <Input id="password" type="password" required />
         </div>
-        {!isSignUp && (
+        {isSignUp && (
           <div className="gap-2 flex flex-col items-start">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input id="confirmPassword" type="password" required />
