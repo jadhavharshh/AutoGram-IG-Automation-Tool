@@ -1,5 +1,5 @@
 import { GalleryVerticalEnd } from "lucide-react"
-import BGImage from "@/assets/BG1.jpg";
+import BGImage from "@/assets/BG.jpg";
 import { LoginForm } from "@/components/ui/login-form"
 
 export default function LoginPage() {
