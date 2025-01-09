@@ -37,11 +37,12 @@ function App() {
         setLoading(true);
         const response = await apiClient.get(GET_USER_INFO, {withCredentials: true});
         if(response.status === 200 && response.data){
+          console.log("User Info", response.data.user);
           setUserInfo(response.data.user);
         } else {
           setUserInfo({ id: '', email: '' });
         }
-        console.log("User Info", response.data);
+
       } catch (error) {
         console.error('Error fetching user info', error);
       } finally {
