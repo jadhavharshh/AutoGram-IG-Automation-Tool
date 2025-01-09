@@ -14,9 +14,9 @@ export const SignUp = async (request : Request , response : Response , next : Ne
     
     try {
         const {email , password, confirmPassword} = request.body;
-        console.log('email', email)
-        console.log('password', password)
-        console.log('confirmapssword', confirmPassword)
+        // console.log('email', email)
+        // console.log('password', password)
+        // console.log('confirmapssword', confirmPassword)
         const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]:;"'<>,.?/-]).{8,}$/;
 
         
@@ -57,6 +57,55 @@ export const SignUp = async (request : Request , response : Response , next : Ne
     }
 }
 
-export const SignIn = async () => {
+export const SignIn = async (request : Request , response : Response , next : NextFunction) : Promise<void> => {
     console.log('Sign In')
+
+    
+    try {
+        const {email , password} = request.body;
+        // console.log('email', email)
+        // console.log('password', password)
+        // console.log('confirmapssword', confirmPassword)
+        if (!email || !password){
+            response.status(400).json({message : 'Please enter all fields'})
+            return;
+        }
+        const existUser = await User.findOne({email});
+        
+        if(existUser){
+            response.status(400).json({message : 'User already exist'})
+            return;
+        }
+        const user = await User.findOne({email});
+        if(!user){
+            response.status(400).json({message : 'User does not exist'})
+            return;
+        }
+
+        const isMatch = await compare(password, user.password);
+        if(!isMatch){
+            response.status(400).json({message : 'Invalid credentials'})
+            return;
+        }
+        response.cookie("jwttoken", createToken(email, user.id), {
+            maxAge: 3 * 24 * 60 * 60 * 1000, 
+            secure: true,
+            sameSite: "none",
+        })
+        response.status(200).json({
+            user : {
+                email : user.email,
+                id : user.id
+            }
+        });
+        return;
+
+    } catch (error) {
+        console.log(error)
+        response.status(500).json(
+            {
+                message : "INTERNAL SERVER ERROR"
+            }
+        )
+    }
 }

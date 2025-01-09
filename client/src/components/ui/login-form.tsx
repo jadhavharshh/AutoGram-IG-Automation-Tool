@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { toast } from "sonner"
 import { apiClient } from "@/lib/api-client"
-import { SIGNUP_API } from "@/utils/constants"
+import { LOGIN_API, SIGNUP_API } from "@/utils/constants"
 
 export function LoginForm({
   className,
@@ -22,7 +22,7 @@ export function LoginForm({
     if(isValid){
       try {
         const response = await apiClient.post(SIGNUP_API, {email , password , confirmPassword},{withCredentials:true})
-        console.log('response', response)
+        // console.log('response', response)
         if(response.status === 201){
           toast.success('Account created successfully')
         }
@@ -39,6 +39,26 @@ export function LoginForm({
     }
   }
 
+  const handleLogin = async () => {
+    try {
+      if(!email || !password){
+        toast.error('All fields are required');
+        return;
+      }
+      const response = await apiClient.post(LOGIN_API, {email , password},{withCredentials:true})
+      console.log('response', response)
+      if(response.status === 200){
+        toast.success('Login successful')
+      }
+      
+    } catch (error : any) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+          toast.error('An unexpected error occurred');
+      }
+    }
+  };
   const validatePassword = (password : string) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]:;"'<>,.?/-]).{8,}$/;
   
@@ -107,7 +127,7 @@ export function LoginForm({
           </div>
         )}
         
-        <Button type="submit" className="w-full" onClick={handleSignUp}>
+        <Button type="submit" className="w-full" onClick={isSignUp ? handleSignUp : handleLogin}>
           {isSignUp ? "Sign Up" : "Login"}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
