@@ -21,7 +21,7 @@ export function LoginForm({
     const isValid = await validateSignUp();
     if(isValid){
       try {
-        const response = await apiClient.post(SIGNUP_API, {email , password , confirmPassword})
+        const response = await apiClient.post(SIGNUP_API, {email , password , confirmPassword},{withCredentials:true})
         console.log('response', response)
         if(response.status === 201){
           toast.success('Account created successfully')
@@ -29,8 +29,12 @@ export function LoginForm({
         if(response.status === 400){
           toast.error(response.data.message)
         }
-      } catch (error) {
-        console.error(error)
+      } catch (error: any) {
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message);
+        } else {
+            toast.error('An unexpected error occurred');
+        }
     }
     }
   }
