@@ -6,12 +6,13 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { apiClient } from "@/lib/api-client"
 import { LOGIN_API, SIGNUP_API } from "@/utils/constants"
+import { useNavigate } from "react-router-dom"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-
+  const navigate = useNavigate(); 
   const [isSignUp, setIsSignUp] = useState(true)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -49,6 +50,7 @@ export function LoginForm({
       console.log('response', response)
       if(response.status === 200){
         toast.success('Login successful')
+        navigate("/dashboard")
       }
       
     } catch (error : any) {
