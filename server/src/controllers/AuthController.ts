@@ -4,8 +4,9 @@ import User from '../models/UserModel';
 import { compare } from "bcrypt";
 
 // Create Token
-const createToken = (email : string, password : string) => {
-    return jwt.sign({email, password}, process.env.JWT_SECRET as string, {expiresIn: '3d'})
+// Update the createToken function to include userId instead of password
+const createToken = (email: string, userId: string) => {
+    return jwt.sign({ email, userId }, process.env.JWT_SECRET as string, { expiresIn: '3d' })
 }
 
 export const SignUp = async (request : Request , response : Response , next : NextFunction) : Promise<void> => {
@@ -92,6 +93,32 @@ export const SignIn = async (request : Request , response : Response , next : Ne
                 email : user.email,
                 id : user.id
             }
+        });
+        return;
+
+    } catch (error) {
+        console.log(error)
+        response.status(500).json(
+            {
+                message : "INTERNAL SERVER ERROR"
+            }
+        )
+    }
+}
+
+export const getUserInfo = async (request : Request , response : Response , next : NextFunction) : Promise<void> => {
+    console.log('Get User Info')
+    try {
+        const UserData = await User.findById(request.userId);
+        if(!UserData){
+            response.status(400).json({message : 'User does not exist'})
+            return;
+        }
+        response.status(200).json({
+            user : {
+                email : UserData.email,
+                id : UserData.id, 
+            },
         });
         return;
 
