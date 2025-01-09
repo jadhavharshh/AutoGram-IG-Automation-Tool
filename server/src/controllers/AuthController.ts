@@ -70,12 +70,7 @@ export const SignIn = async (request : Request , response : Response , next : Ne
             response.status(400).json({message : 'Please enter all fields'})
             return;
         }
-        const existUser = await User.findOne({email});
         
-        if(existUser){
-            response.status(400).json({message : 'User already exist'})
-            return;
-        }
         const user = await User.findOne({email});
         if(!user){
             response.status(400).json({message : 'User does not exist'})
