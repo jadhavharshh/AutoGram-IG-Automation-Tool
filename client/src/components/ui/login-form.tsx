@@ -6,19 +6,23 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { apiClient } from "@/lib/api-client"
 import { LOGIN_API, SIGNUP_API } from "@/utils/constants"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
+import userAppStore from "@/store/store"
+
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
   const navigate = useNavigate(); 
-  const [isSignUp, setIsSignUp] = useState(true)
+  const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const { setUserInfo } = userAppStore();
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevents page reload
     const isValid = await validateSignUp();
     if(isValid){
       try {
@@ -26,6 +30,8 @@ export function LoginForm({
         // console.log('response', response)
         if(response.status === 201){
           toast.success('Account created successfully')
+          setUserInfo(response.data.user);
+          navigate("/dashboard");
         }
         if(response.status === 400){
           toast.error(response.data.message)
@@ -34,33 +40,38 @@ export function LoginForm({
         if (error.response && error.response.data && error.response.data.message) {
           toast.error(error.response.data.message);
         } else {
+            console.log(error)
             toast.error('An unexpected error occurred');
         }
     }
     }
   }
 
-  const handleLogin = async () => {
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevents page reload
     try {
-      if(!email || !password){
+      if (!email || !password) {
         toast.error('All fields are required');
         return;
       }
-      const response = await apiClient.post(LOGIN_API, {email , password},{withCredentials:true})
-      console.log('response', response)
-      if(response.status === 200){
-        toast.success('Login successful')
-        navigate("/dashboard")
+      const response = await apiClient.post(LOGIN_API, { email, password }, { withCredentials: true });
+      console.log('response', response);
+      if (response.status === 200) {
+        toast.success('Login successful');
+        setUserInfo({ id: response.data.user.id, email: response.data.user.email });
+        navigate("/dashboard");
       }
-      
-    } catch (error : any) {
+    } catch (error: any) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
       } else {
-          toast.error('An unexpected error occurred');
+        console.log(error);
+        toast.error('An unexpected error occurred');
       }
     }
   };
+
   const validatePassword = (password : string) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]:;"'<>,.?/-]).{8,}$/;
   
@@ -76,16 +87,16 @@ export function LoginForm({
       toast.error('All fields are required');
       return false;
     }
-    
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return false;
+    }
     if (!validatePassword(password)) {
       toast.error('Password must include at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long');
       return false;
     }
   
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return false;
-    }
+
   
     return true;
   }
@@ -93,7 +104,7 @@ export function LoginForm({
 
 
   return (
-    <form className={cn("flex flex-col gap-4", className)} {...props}>
+    <form className={cn("flex flex-col gap-4", className)} onSubmit={isSignUp ? handleSignUp : handleLogin} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">{isSignUp ? "Create your account" : "Login to your account"}</h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -129,7 +140,7 @@ export function LoginForm({
           </div>
         )}
         
-        <Button type="submit" className="w-full" onClick={isSignUp ? handleSignUp : handleLogin}>
+        <Button type="submit" className="w-full">
           {isSignUp ? "Sign Up" : "Login"}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
