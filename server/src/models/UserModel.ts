@@ -23,13 +23,27 @@ const UserSchema = new mongoose.Schema({
         type:Boolean,
         required:false,
         default:false,
-    }
+    },
+    otp: {
+        type: String,
+        required: false,
+    },
+    otpExpires: {
+        type: Date,
+        required: false,
+    },
+    isVerified: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
 });
 
 
 UserSchema.pre("save", async function (next) {
     const salt = await genSalt();
     this.password = await hash(this.password, salt);
+    next();
 })
 
 const User = mongoose.model('User', UserSchema);

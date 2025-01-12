@@ -2,7 +2,6 @@ import nodemailer from 'nodemailer';
 import winston from 'winston';
 import dotenv from "dotenv";
 
-
 dotenv.config();
 
 const logger = winston.createLogger({
@@ -18,11 +17,7 @@ export const sendMail = async (from: string, to: string, subject: string, html: 
             user: process.env.NODEMAILER_GMAIL_USER,
             pass: process.env.NODEMAILER_APP_PASSWORD
         },
-        from : process.env.NODEMAILER_GMAIL_USER,
-        to : "satxnhere",
-        subject : "Hello",
-        html : "<h1>Hi</h1>"
-
+        debug: true // Enable debug output
     });
 
     const mailOptions = {
@@ -32,12 +27,18 @@ export const sendMail = async (from: string, to: string, subject: string, html: 
         html: html
     };
 
-    logger.info(`Sending mail to - ${to}`);
-    transporter.sendMail(mailOptions, (error, info)=> {
-        if (error) {
-            logger.error(error);
-        } else {
-            logger.info('Email sent: ' + info.response);
-        }
-    });
+    try {
+        await transporter.sendMail(mailOptions);
+        logger.info(`Email sent to ${to}`);
+    } catch (error: any) {
+        logger.error(`Failed to send email to ${to}: ${error.message}`);
+        throw error; // Propagate the error to be handled by the controller
+    }
+}
+
+// New sendOTP function
+export const sendOTP = async (to: string, otp: string) => {
+    const subject = "Your OTP Code";
+    const html = `<h1>Your OTP is: ${otp}</h1>`;
+    await sendMail(process.env.NODEMAILER_GMAIL_USER as string, to, subject, html);
 }
