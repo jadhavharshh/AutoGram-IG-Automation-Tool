@@ -10,6 +10,7 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  MessageSquare, Send , MessageCircle
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -62,17 +63,17 @@ const data = {
     {
       title: "Generate Messages",
       url: "/generate-messages",
-      icon: BookOpen,
+      icon: MessageSquare,
     },
     {
       title: "Send Messages",
       url: "/send-messages",
-      icon: BookOpen,
+      icon: Send,
     },
     {
       title: "AI Chatbot",
       url: "/ai-chatbot",
-      icon: BookOpen,
+      icon: MessageCircle,
     },
     {
       title: "Settings",
