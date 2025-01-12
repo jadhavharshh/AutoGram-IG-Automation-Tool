@@ -11,52 +11,76 @@ const createToken = (email: string, userId: string) => {
     return jwt.sign({ email, userId }, process.env.JWT_SECRET as string, { expiresIn: '3d' })
 }
 
-export const SignUp = async (request : Request , response : Response , next : NextFunction) : Promise<void> => {
-    console.log('Sign Up')
+// SignUp Function
+export const SignUp = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    console.log('Sign Up');
 
-    
     try {
-        const {email , password, confirmPassword} = request.body;
-        // console.log('email', email)
-        // console.log('password', password)
-        // console.log('confirmapssword', confirmPassword)
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]:;"'<>,.?/-]).{8,}$/;
+        const { email, password, confirmPassword } = request.body;
 
-        
-        if(!passwordRegex.test(password)){
-            response.status(400).json({message : 'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long'})
-            return;
-        }
-        if(password !== confirmPassword){
-            response.status(400).json({message : 'Password do not match'})
-            return;
-        }
-        if(password.length < 8){
-            response.status(400).json({message : 'Password must be atleast 8 characters long'})
+        // Validate input
+        if (!email || !password || !confirmPassword) {
+            response.status(400).json({ message: 'All fields are required.' });
             return;
         }
 
-        const existUser = await User.findOne({email});
-        if(existUser){
-            response.status(400).json({message : 'User already exist'})
+        if (password !== confirmPassword) {
+            response.status(400).json({ message: 'Passwords do not match.' });
             return;
         }
 
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            if (!existingUser.isVerified) {
+                // User exists but not verified. Resend OTP.
+                const newOtp = crypto.randomInt(100000, 999999).toString();
+                const newOtpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+                existingUser.otp = newOtp;
+                existingUser.otpExpires = newOtpExpires;
+                await existingUser.save();
+
+                console.log("Resending OTP to existing unverified user.");
+
+                // Send OTP via email (Do not await)
+                sendOTP(email, newOtp).catch(error => {
+                    console.error('Failed to send OTP:', error);
+                });
+
+                // Respond to client that OTP has been resent
+                response.status(200).json({
+                    message: 'OTP has been resent to your email. Please verify to complete registration.'
+                });
+                return;
+            } else {
+                // User exists and is verified
+                response.status(400).json({ message: 'User already exists. Please log in.' });
+                return;
+            }
+        }
+
+        // Generate OTP and expiration
         const otp = crypto.randomInt(100000, 999999).toString();
         const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-        const user = await User.create({email, password, otp, otpExpires});
-        console.log("SEND OTP FUNCTIONAL CLALED")
-        await sendOTP(email, otp);
+        // Create user with OTP
+        const user = await User.create({ email, password, otp, otpExpires });
+        console.log("SEND OTP FUNCTIONAL CALLED");
 
-        // Respond to client that OTP has been sent
+        // Send OTP via email (Do not await)
+        sendOTP(email, otp).catch(error => {
+            console.error('Failed to send OTP:', error);
+        });
+
+        // Respond to client that OTP has been sent immediately
         response.status(201).json({
             message: 'OTP sent to email. Please verify to complete registration.'
         });
         return;
 
-    } catch (error) {
-        console.log(error)
+    } catch (error: any) {
+        console.log(error);
         if (!response.headersSent) { // Ensure response hasn't been sent
             response.status(500).json({ message: "INTERNAL SERVER ERROR" });
         }
