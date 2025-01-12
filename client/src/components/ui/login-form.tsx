@@ -29,13 +29,18 @@ export function LoginForm({
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevents page reload
-
+  
     const isValid = await validateSignUp();
     if(isValid){
       try {
         const response = await apiClient.post(SIGNUP_API, {email , password , confirmPassword},{withCredentials:true})
         if(response.status === 201){
           toast.success('Account created successfully. An OTP has been sent to your email.');
+          setOtpInputOption(true); // Show OTP input
+        }
+        if(response.status === 200){
+          // This status indicates OTP was resent for existing unverified user
+          toast.success('OTP has been resent to your email. Please verify to complete registration.');
           setOtpInputOption(true); // Show OTP input
         }
         if(response.status === 400){
@@ -51,7 +56,6 @@ export function LoginForm({
       }
     }
   }
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevents page reload
     try {
