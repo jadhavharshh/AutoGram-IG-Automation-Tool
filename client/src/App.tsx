@@ -19,12 +19,24 @@ interface ChildrenProps {
   children: React.ReactNode;
 }
 
-const PrivateRoute = ({ children } : ChildrenProps) => {
+const PrivateRoute = ({ children }: ChildrenProps) => {
   const { userInfo } = userAppStore();
   const isAuthenticated = !!userInfo;
-  console.log("is authenticated", isAuthenticated);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      setIsLoading(false);
+    }
+  }, [userInfo]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return isAuthenticated ? children : <Navigate to="/auth" />;
-}
+};
+
 
 const AuthRoute = ({ children } : ChildrenProps) => {
   const { userInfo } = userAppStore();
