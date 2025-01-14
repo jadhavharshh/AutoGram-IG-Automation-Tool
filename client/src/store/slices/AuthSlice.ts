@@ -1,7 +1,6 @@
-// useAuthSlice.ts
 export interface AuthState {
-  userInfo: { id: string; email: string } | undefined;
-  setUserInfo: (user: { id: string;  email: string }) => void;
+  userInfo: { id: string; email: string } | null | undefined;
+  setUserInfo: (user: { id: string; email: string } | null) => void;
 }
 
 export const createAuthSlice = (set: any): AuthState => ({
