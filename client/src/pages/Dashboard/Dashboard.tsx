@@ -14,6 +14,9 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { Chart1 } from "./components/Chart1"
+import { Chart2 } from "./components/Chart2"
+import { Chart3 } from "./components/Chart3"
 
 const Dashboard = () => {
   return (
@@ -43,13 +46,18 @@ const Dashboard = () => {
     </div>
   </header>
   <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-      <div className="aspect-video rounded-xl bg-slate-100/50 dark:bg-slate-800/50" />
-      <div className="aspect-video rounded-xl bg-slate-100/50 dark:bg-slate-800/50" />
-      <div className="aspect-video rounded-xl bg-slate-100/50 dark:bg-slate-800/50" />
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="w-full h-full">
+      <Chart1 />
     </div>
-    <div className="min-h-[100vh] flex-1 rounded-xl bg-slate-100/50 md:min-h-min dark:bg-slate-800/50" />
+    <div className="w-full h-full">
+      <Chart2 />
+    </div>  
+    <div className="w-full h-full">
+      <Chart3 />
+    </div>  
   </div>
+</div>
 </SidebarInset>
 
     </SidebarProvider>
