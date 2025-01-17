@@ -6,6 +6,7 @@ import grainTexture from "@/assets/noise.webp";
 import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
 import BentoGrid from "./components/Bento-Grid";
 import { AccordionDemo } from "./components/Accordion";
+import Footer from "./components/Footer";
 const Home = () => {
   return (
     <>
@@ -103,6 +104,9 @@ const Home = () => {
         </div>
         <div className="relative w-full max-w-7xl mx-auto px-4 py-24 gap-4 ">
           <AccordionDemo />
+        </div>
+        <div className="relative w-full mx-auto px-4 py-24 pb-0 gap-4 ">
+          <Footer />
         </div>
       </div>
     </>
