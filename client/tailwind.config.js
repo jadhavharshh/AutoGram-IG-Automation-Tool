@@ -4,10 +4,16 @@ export default {
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
 	theme: {
     	extend: {
-			fontFamily: {
-				sans: ['Geist', 'sans-serif'],
-				mono: ['Geist Mono', 'monospace'],
-			},
+    		fontFamily: {
+    			sans: [
+    				'Geist',
+    				'sans-serif'
+    			],
+    			mono: [
+    				'Geist Mono',
+    				'monospace'
+    			]
+    		},
     		borderRadius: {
     			lg: 'var(--radius)',
     			md: 'calc(var(--radius) - 2px)',
@@ -65,15 +71,46 @@ export default {
     				ring: 'hsl(var(--sidebar-ring))'
     			}
     		},
-			keyframes: {
-				"caret-blink": {
-				  "0%,70%,100%": { opacity: "1" },
-				  "20%,50%": { opacity: "0" },
-				},
-			  },
-			  animation: {
-				"caret-blink": "caret-blink 1.25s ease-out infinite",
-			  },
+    		keyframes: {
+    			'caret-blink': {
+    				'0%,70%,100%': {
+    					opacity: '1'
+    				},
+    				'20%,50%': {
+    					opacity: '0'
+    				}
+    			},
+    			'background-position-spin': {
+    				'0%': {
+    					backgroundPosition: 'top center'
+    				},
+    				'100%': {
+    					backgroundPosition: 'bottom center'
+    				}
+    			},
+    			'accordion-down': {
+    				from: {
+    					height: '0'
+    				},
+    				to: {
+    					height: 'var(--radix-accordion-content-height)'
+    				}
+    			},
+    			'accordion-up': {
+    				from: {
+    					height: 'var(--radix-accordion-content-height)'
+    				},
+    				to: {
+    					height: '0'
+    				}
+    			}
+    		},
+    		animation: {
+    			'caret-blink': 'caret-blink 1.25s ease-out infinite',
+    			'background-position-spin': 'background-position-spin 3000ms infinite alternate',
+    			'accordion-down': 'accordion-down 0.2s ease-out',
+    			'accordion-up': 'accordion-up 0.2s ease-out'
+    		}
     	}
     },
   plugins: [require("tailwindcss-animate")],
