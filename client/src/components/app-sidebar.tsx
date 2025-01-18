@@ -9,8 +9,9 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-  MessageSquare, Send , MessageCircle
+  MessageSquare, Send , MessageCircle, Server, Instagram
 } from "lucide-react"
+
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
@@ -55,9 +56,19 @@ const data = {
       icon: SquareTerminal,
     },
     {
-      title: "Scrape Data",
-      url: "/data-scraper",
+      title: "Profile Scraper",
+      url: "/profile-scraper",
       icon: Bot,
+    },
+    {
+      title: "Add Proxies",
+      url: "/add-proxies",
+      icon: Server,
+    },
+    {
+      title: "Add Instagram Accounts",
+      url: "/add-accounts",
+      icon: Instagram,
     },
     {
       title: "Generate Messages",

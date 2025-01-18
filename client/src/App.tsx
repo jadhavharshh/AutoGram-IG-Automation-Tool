@@ -13,6 +13,8 @@ import GenerateMessages from './pages/GenerateMessages/GenerateMessages'
 import SendMessages from './pages/SendMessages/SendMessages'
 import Chatbot from './pages/Chatbot/Chatbot'
 import Settings from './pages/Settings/Settings'
+import Proxies from './pages/Proxies/Proxies'
+import Instagram from './pages/Instagram/Instagram'
 
 // Generic interface for children
 interface ChildrenProps {
@@ -82,13 +84,15 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path="/auth" element={<AuthRoute><LoginPage /></AuthRoute>} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/data-scraper" element={<PrivateRoute><Scraper /></PrivateRoute>} />
+          <Route path="/profile-scraper" element={<PrivateRoute><Scraper /></PrivateRoute>} />
           <Route path="/generate-messages" element={<PrivateRoute><GenerateMessages /></PrivateRoute>} />
           <Route path="/send-messages" element={<PrivateRoute><SendMessages /></PrivateRoute>} />
           <Route path="/ai-chatbot" element={<PrivateRoute><Chatbot /></PrivateRoute>} />
+          <Route path="/add-proxies" element={<PrivateRoute><Proxies /></PrivateRoute>} />
+          <Route path="/add-accounts" element={<PrivateRoute><Instagram /></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-
-          <Route path='*' element={<Error />} />
+          <Route path="/404" element={<Error />} />
+          <Route path='*' element={<Navigate to ="/404" />} />
         </Routes>
       </BrowserRouter>
     </>
