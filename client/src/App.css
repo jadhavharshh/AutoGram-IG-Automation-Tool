@@ -8,6 +8,7 @@
 @layer base {
   html {
     font-family: "Geist", sans-serif;
+    scroll-behavior: smooth;
   }
 }
 
