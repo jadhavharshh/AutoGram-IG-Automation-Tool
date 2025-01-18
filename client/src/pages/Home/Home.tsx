@@ -7,10 +7,12 @@ import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
 import BentoGrid from "./components/Bento-Grid";
 import { AccordionDemo } from "./components/Accordion";
 import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 const Home = () => {
   return (
     <>
       <div className="w-full bg-white dark:bg-black">
+        <Navbar />
         <div className="relative min-h-screen flex flex-col items-center justify-start pt-32  overflow-hidden">
           <Particles
             className="absolute inset-0 z-0"
