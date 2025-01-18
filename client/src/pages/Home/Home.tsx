@@ -23,11 +23,11 @@ const Home = () => {
 
           {/* Text Content */}
           <div className="relative z-20 w-full max-w-7xl px-4">
-            <h1 className="tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white mx-auto py-6 text-center text-4xl [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-4xl lg:text-7xl font-bold">
+            <h1 className="tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white mx-auto py-6 text-center text-4xl [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-4xl lg:text-7xl font-bold pb-0">
               Automate Your Instagram, <br />
               <Cover>Elevate Your Brand</Cover>
             </h1>
-            <p className="my-4 font-normal text-neutral-600 dark:text-neutral-200 mx-auto mt-2 max-w-5xl text-center text-base md:mt-4 md:text-xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800">
+            <p className="my-4 font-normal text-neutral-600 dark:text-neutral-200 mx-auto mt-2 max-w-6xl text-center text-base md:mt-4 md:text-xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800">
               Autogram transforms outreach with end-to-end automation. From
               scraping high-quality leads to crafting personalized messages and
               sending them out effortlessly, Autogram handles it all, empowering
