@@ -17,7 +17,6 @@ export const SignUp = async (request: Request, response: Response, next: NextFun
 
     try {
         const { email, password, confirmPassword } = request.body;
-
         // Validate input
         if (!email || !password || !confirmPassword) {
             response.status(400).json({ message: 'All fields are required.' });
@@ -144,7 +143,7 @@ export const SignIn = async (request: Request, response: Response, next: NextFun
         // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
-            response.status(400).json({ message: 'Invalid email or password.' });
+            response.status(400).json({ message: 'User does not Exist.' });
             return;
         }
 
@@ -157,7 +156,7 @@ export const SignIn = async (request: Request, response: Response, next: NextFun
         // Compare password
         const isMatch = await compare(password, user.password);
         if (!isMatch) {
-            response.status(400).json({ message: 'Invalid email or password.' });
+            response.status(400).json({ message: 'Invalid password.' });
             return;
         }
 
