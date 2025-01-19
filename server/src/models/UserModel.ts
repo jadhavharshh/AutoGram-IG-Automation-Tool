@@ -40,11 +40,19 @@ const UserSchema = new mongoose.Schema({
 });
 
 
+// Pre-save hook to hash password only if it's new or modified
 UserSchema.pre("save", async function (next) {
-    const salt = await genSalt();
-    this.password = await hash(this.password, salt);
-    next();
-})
+    if (!this.isModified('password')) {
+        return next();
+    }
+    try {
+        const salt = await genSalt(10);
+        this.password = await hash(this.password, salt);
+        next();
+    } catch (err: any) {
+        next(err);
+    }
+});
 
 const User = mongoose.model('User', UserSchema);
 
