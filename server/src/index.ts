@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/AuthRoute';
 import mongoose from 'mongoose';
+import IGRoutes from './routes/IGRoutes';
 
 let app = express();
 dotenv.config()
@@ -23,7 +24,7 @@ app.use(express.json())
 
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/ig/v1", IGRoutes);
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`)
 })
