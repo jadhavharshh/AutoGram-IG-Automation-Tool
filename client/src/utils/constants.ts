@@ -4,3 +4,6 @@ export const SIGNUP_API = `${AUTH_API}/sign-up`;
 export const LOGIN_API = `${AUTH_API}/sign-in`;
 export const GET_USER_INFO = `${AUTH_API}/get-user-info`;
 export const VERIFY_OTP_API = `${AUTH_API}/verify-otp`;
+
+export const IG_API = "api/ig/v1";
+export const ADD_INSTAGRAM_PROFILE = `${IG_API}/add-ig-account`;
