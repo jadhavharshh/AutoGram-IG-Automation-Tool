@@ -7,3 +7,4 @@ export const VERIFY_OTP_API = `${AUTH_API}/verify-otp`;
 
 export const IG_API = "api/ig/v1";
 export const ADD_INSTAGRAM_PROFILE = `${IG_API}/add-ig-account`;
+export const GET_INSTAGRAM_PROFILES = `${IG_API}/get-ig-accounts`;

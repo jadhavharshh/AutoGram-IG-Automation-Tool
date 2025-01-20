@@ -22,3 +22,17 @@ export const AddIGAccount = async (request: Request, response: Response, next: N
         console.log(error);
     }
 }
+
+
+export const GetIGAccounts = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    try {
+        const userId = request.userId;
+        const igAccounts = await IGUser.find({ userId }).select('igUsername igPassword createdAt');
+        response.status(200).json(igAccounts);
+        return;
+    } catch (error) {
+        // next(error);
+        console.log("Error in GetIGAccounts");
+        console.log(error);
+    }
+}

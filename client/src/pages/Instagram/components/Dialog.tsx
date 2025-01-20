@@ -11,11 +11,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { apiClient } from "@/lib/api-client"
-import { ADD_INSTAGRAM_PROFILE } from "@/utils/constants"
+import { ADD_INSTAGRAM_PROFILE, GET_INSTAGRAM_PROFILES } from "@/utils/constants"
 
 
 
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 import { toast } from "sonner"
 
 export function DialogDemo() {
@@ -23,6 +23,21 @@ export function DialogDemo() {
   const [igPassword, setIgPassword] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
+  useEffect(() => {
+    fetchIgAccounts();
+  }, []);
+  const fetchIgAccounts = async () => {
+    try {
+      const response = await apiClient.get(GET_INSTAGRAM_PROFILES, {withCredentials: true})      
+      console.log(response)
+    } catch (error: any) {
+      if(error.response && error.response.data){
+        toast.error(error.response.data.message)
+        console.log("Error Message:", error.response.data.message)
+      }
+    }
+
+  };
   const handleIGAccount = async (e: any) => {
     e.preventDefault()
     if(ValidateIgInputs()){
@@ -33,6 +48,7 @@ export function DialogDemo() {
         setIgUsername("")
         setIgPassword("")
         setIsOpen(false)
+        toast.success("Instagram account added successfully")
       } catch (error : any) {
         if (error.response && error.response.data) {
           toast.error(error.response.data.message)
