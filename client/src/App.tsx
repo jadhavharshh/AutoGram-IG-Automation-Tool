@@ -15,6 +15,8 @@ import Chatbot from './pages/Chatbot/Chatbot'
 import Settings from './pages/Settings/Settings'
 import Proxies from './pages/Proxies/Proxies'
 import Instagram from './pages/Instagram/Instagram'
+import { SyncLoader } from "react-spinners";
+
 
 // Generic interface for children
 interface ChildrenProps {
@@ -33,7 +35,15 @@ const PrivateRoute = ({ children }: ChildrenProps) => {
   }, [userInfo]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className=' w-full flex flex-col justify-center items-center h-screen'>
+    <SyncLoader
+    color="#4fa94d"
+    size={15} // Size of each dot
+    margin={2} // Margin between dots
+    speedMultiplier={1} // Adjust animation speed
+    aria-label="sync-loading"
+    />
+    </div>;
   }
 
   return isAuthenticated ? children : <Navigate to="/auth" />;
