@@ -31,21 +31,21 @@ const Navbar = () => {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground ">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            <span className=" font-semibold text-lg tracking-4 uppercase text-brand-neutrals-700 dark:text-brand-neutrals-200">
-              AutoGram.
+            <span className=" font-semibold text-lg tracking-4 uppercase text-white">
+              AutoGram
             </span>
           </a>
-          <ul className="col-start-2 gap-5 px-2 font-mono font-semibold uppercase -tracking-2 text-brand-neutrals-700 dark:text-brand-neutrals-200 xl:gap-11 hidden lg:flex">
-            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-600 dark:text-neutral-300" href="/pricing">Pricing</a></li>
-            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-600 dark:text-neutral-300" href="/features">Features</a></li>
-            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-600 dark:text-neutral-300" href="/enterprise">Enterprise</a></li>
-            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-600 dark:text-neutral-300" href="/blog">Blog</a></li>
-            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-600 dark:text-neutral-300" href="https://forum.cursor.com" target="_blank" rel="noreferrer">Forum</a></li>
-            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-600 dark:text-neutral-300" href="https://anysphere.inc" target="_blank" rel="noreferrer">Careers</a></li>
+          <ul className="col-start-2 gap-5 px-2 font-mono font-semibold uppercase -tracking-2 text-brand-neutrals-200 xl:gap-11 hidden lg:flex">
+            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-300 hover:text-neutral-500" href="/pricing">Pricing</a></li>
+            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-300 hover:text-neutral-500" href="/features">Features</a></li>
+            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-300 hover:text-neutral-500" href="/enterprise">Enterprise</a></li>
+            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-300 hover:text-neutral-500" href="/blog">Blog</a></li>
+            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-300 hover:text-neutral-500" href="https://forum.cursor.com" target="_blank" rel="noreferrer">Forum</a></li>
+            <li><a className="transition-colors duration-300 hover:text-brand-foreground text-neutral-300 hover:text-neutral-500" href="https://anysphere.inc" target="_blank" rel="noreferrer">Careers</a></li>
           </ul>
           <div className="col-start-3 hidden w-full justify-end gap-2 lg:flex">
             <a
-              className="relative inline-flex items-center justify-center whitespace-nowrap rounded-lg uppercase overflow-hidden transition-colors bg-brand-white text-brand-black border border-brand-neutrals-100 dark:border-brand-neutrals-800 hover:!border-brand-gray-400 md:px-4 md:py-3.5 font-mono font-semibold text-sm/[1.125rem] tracking-4"
+              className="relative inline-flex items-center justify-center whitespace-nowrap rounded-lg uppercase overflow-hidden transition-colors bg-brand-white text-brand-black border border-brand-neutrals-800 hover:!border-brand-gray-400 md:px-4 md:py-3.5 font-mono font-semibold text-sm/[1.125rem] tracking-4 text-white"
               href="/dashboard"
             >
               <span className="relative z-10 flex">Go to Dashboard</span>

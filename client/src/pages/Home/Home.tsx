@@ -11,7 +11,7 @@ import Navbar from "./components/Navbar";
 const Home = () => {
   return (
     <>
-      <div className="w-full bg-white dark:bg-black">
+      <div className="w-full bg-black">
         <Navbar />
         <div className="relative min-h-screen flex flex-col items-center justify-start pt-32  overflow-hidden">
           <Particles
@@ -23,11 +23,11 @@ const Home = () => {
 
           {/* Text Content */}
           <div className="relative z-20 w-full max-w-7xl px-4">
-            <h1 className="tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white mx-auto py-6 text-center text-4xl [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-4xl lg:text-7xl font-bold pb-0">
+            <h1 className="tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-white to-white mx-auto py-6 text-center text-4xl [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-4xl lg:text-7xl font-bold pb-0">
               Automate Your Instagram, <br />
               <Cover>Elevate Your Brand</Cover>
             </h1>
-            <p className="my-4 font-normal text-neutral-600 dark:text-neutral-200 mx-auto mt-2 max-w-6xl text-center text-base md:mt-4 md:text-xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800">
+            <p className="my-4 font-normal text-neutral-200 mx-auto mt-2 max-w-6xl text-center text-base md:mt-4 md:text-xl bg-clip-text text-transparent bg-gradient-to-b  via-neutral-700 to-neutral-700 from-neutral-800">
               Autogram transforms outreach with end-to-end automation. From
               scraping high-quality leads to crafting personalized messages and
               sending them out effortlessly, Autogram handles it all, empowering
@@ -55,10 +55,10 @@ const Home = () => {
         </div>
         <div className="relative w-full max-w-7xl mx-auto px-4 py-24 gap-4">
           <div className="flex flex-col text-center">
-            <h2 className="text-3xl font-bold text-neutral-900 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white mx-auto py-2 text-center [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-3xl lg:text-5xl bold">
+            <h2 className="text-3xl font-bold text-neutral-900 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-white to-white mx-auto py-2 text-center [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-3xl lg:text-5xl bold">
               How Autogram Works
             </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-300">
+            <p className="text-lg text-neutral-300">
               Autogram is designed to simplify your Instagram outreach process.
               Here's how it works:
             </p>
@@ -94,10 +94,10 @@ const Home = () => {
         </div>
         <div className="relative w-full max-w-7xl mx-auto px-4 py-24 gap-4">
           <div className="flex flex-col text-center p-4 pb-8">
-            <h2 className="text-3xl font-bold text-neutral-900 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white mx-auto py-2 text-center [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-3xl lg:text-5xl bold">
+            <h2 className="text-3xl font-bold text-neutral-900 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-white to-white mx-auto py-2 text-center [text-shadow:0px_1px_3px_rgba(27,37,80,0.14)] md:text-3xl lg:text-5xl bold">
               Features of AutoGram
             </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-300">
+            <p className="text-lg text-neutral-300">
               Autogram is designed to simplify your Instagram outreach process.
               Here's how it works:
             </p>
