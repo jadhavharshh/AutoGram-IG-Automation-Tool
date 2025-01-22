@@ -9,7 +9,8 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-  MessageSquare, Send , MessageCircle, Server, Instagram
+  MessageSquare, Send , MessageCircle, Server, Instagram,
+  MapIcon
 } from "lucide-react"
 
 
@@ -89,6 +90,11 @@ const data = {
       title: "Settings",
       url: "/settings",
       icon: Settings2,
+    },
+    {
+      title: "Dev Mode",
+      url: "/devmode",
+      icon: MapIcon,
     },
   ],
 }
