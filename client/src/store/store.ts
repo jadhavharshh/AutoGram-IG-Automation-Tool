@@ -1,11 +1,15 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 import { createAuthSlice, AuthState } from './slices/AuthSlice';
-import { createAppSlice } from './slices/AppSlice';
+import { createAppSlice, AppState } from './slices/AppSlice'; // Ensure AppSlice exists
+import { createIgStore, IgStoreState } from './slices/IgStore';
 
 // Combine all slices into one main store
-const userAppStore = create<AuthState>((set) => ({
-  ...createAuthSlice(set),  // Add auth slice
-  ...createAppSlice(set),   // Add app slice
+interface StoreState extends AuthState, AppState, IgStoreState {}
+
+const useStore = create<StoreState>((set) => ({
+  ...createAuthSlice(set),
+  ...createAppSlice(set),
+  ...createIgStore(set),
 }));
 
-export default userAppStore;
+export default useStore;

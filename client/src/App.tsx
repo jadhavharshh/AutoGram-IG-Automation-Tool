@@ -16,6 +16,7 @@ import Settings from './pages/Settings/Settings'
 import Proxies from './pages/Proxies/Proxies'
 import Instagram from './pages/Instagram/Instagram'
 import { SyncLoader } from "react-spinners";
+import CheckIgAccounts from './pages/DevMode/DevMode'
 
 
 // Generic interface for children
@@ -102,8 +103,10 @@ function App() {
           <Route path="/add-accounts" element={<PrivateRoute><Instagram /></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="/404" element={<Error />} />
+          <Route path="/devmode" element={<CheckIgAccounts />} />
           <Route path='*' element={<Navigate to ="/404" />} />
         </Routes>
+
       </BrowserRouter>
     </>
   )

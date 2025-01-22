@@ -12,31 +12,23 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { DataTableDemo } from "./components/DataTable"
-import { toast } from "sonner"
-import { apiClient } from "@/lib/api-client"
-import { GET_INSTAGRAM_PROFILES } from "@/utils/constants"
-import { useEffect, useState } from "react"
+import { useEffect } from 'react'
+import useStore from '@/store/store'
 
 const Instagram = () => {
-  const [igAccounts, setIgAccounts] = useState<any[]>([]);
+  const igAccounts = useStore((state) => state.igAccounts);
+  const fetchIgAccounts = useStore((state) => state.fetchIgAccounts);
 
   useEffect(() => {
+    console.log("Instagram component mounted and calling fetchIgAccounts");
     fetchIgAccounts();
-  }, []);
+  }, [fetchIgAccounts]);
+  
+  useEffect(() => {
+    console.log("Instagram component - igAccounts:", igAccounts);
+  }, [igAccounts]);
 
-  const fetchIgAccounts = async () => {
-    try {
-      const response = await apiClient.get(GET_INSTAGRAM_PROFILES, {withCredentials: true})      
-      setIgAccounts(response.data); 
-      console.log(response)
-    } catch (error: any) {
-      if(error.response && error.response.data){
-        toast.error(error.response.data.message)
-        console.log("Error Message:", error.response.data.message)
-      }
-    }
 
-  };
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen">
             <SidebarProvider>
