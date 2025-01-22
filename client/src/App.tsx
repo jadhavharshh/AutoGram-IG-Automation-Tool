@@ -37,7 +37,7 @@ const PrivateRoute = ({ children }: ChildrenProps) => {
   if (isLoading) {
     return <div className=' w-full flex flex-col justify-center items-center h-screen'>
     <SyncLoader
-    color="#4fa94d"
+    color="#ffffff"
     size={15} // Size of each dot
     margin={2} // Margin between dots
     speedMultiplier={1} // Adjust animation speed
