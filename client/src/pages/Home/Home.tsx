@@ -27,11 +27,11 @@ const Home = () => {
               Automate Your Instagram, <br />
               <Cover>Elevate Your Brand</Cover>
             </h1>
-            <p className="my-4 font-normal text-neutral-200 mx-auto mt-2 max-w-6xl text-center text-base md:mt-4 md:text-xl bg-clip-text text-transparent bg-gradient-to-b  via-neutral-700 to-neutral-700 from-neutral-800">
-              Autogram transforms outreach with end-to-end automation. From
-              scraping high-quality leads to crafting personalized messages and
-              sending them out effortlessly, Autogram handles it all, empowering
-              you to focus on scaling your impact.
+            <p className="my-4 font-normal text-white mx-auto mt-2 max-w-6xl text-center text-base md:mt-4 md:text-xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 via-neutral-200 to-neutral-300">
+            Autogram transforms outreach with end-to-end automation. From
+            scraping high-quality leads to crafting personalized messages and
+            sending them out effortlessly, Autogram handles it all, empowering
+            you to focus on scaling your impact.
             </p>
           </div>
 
