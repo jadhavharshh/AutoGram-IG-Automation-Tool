@@ -23,21 +23,7 @@ export function DialogDemo() {
   const [igPassword, setIgPassword] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
-  useEffect(() => {
-    fetchIgAccounts();
-  }, []);
-  const fetchIgAccounts = async () => {
-    try {
-      const response = await apiClient.get(GET_INSTAGRAM_PROFILES, {withCredentials: true})      
-      console.log(response)
-    } catch (error: any) {
-      if(error.response && error.response.data){
-        toast.error(error.response.data.message)
-        console.log("Error Message:", error.response.data.message)
-      }
-    }
 
-  };
   const handleIGAccount = async (e: any) => {
     e.preventDefault()
     if(ValidateIgInputs()){

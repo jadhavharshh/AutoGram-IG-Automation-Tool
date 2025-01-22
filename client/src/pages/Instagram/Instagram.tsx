@@ -12,8 +12,31 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { DataTableDemo } from "./components/DataTable"
+import { toast } from "sonner"
+import { apiClient } from "@/lib/api-client"
+import { GET_INSTAGRAM_PROFILES } from "@/utils/constants"
+import { useEffect, useState } from "react"
 
 const Instagram = () => {
+  const [igAccounts, setIgAccounts] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchIgAccounts();
+  }, []);
+
+  const fetchIgAccounts = async () => {
+    try {
+      const response = await apiClient.get(GET_INSTAGRAM_PROFILES, {withCredentials: true})      
+      setIgAccounts(response.data); 
+      console.log(response)
+    } catch (error: any) {
+      if(error.response && error.response.data){
+        toast.error(error.response.data.message)
+        console.log("Error Message:", error.response.data.message)
+      }
+    }
+
+  };
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen">
             <SidebarProvider>
@@ -36,7 +59,7 @@ const Instagram = () => {
   </header>
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
     <div className=" gap-4">
-      <DataTableDemo />
+      <DataTableDemo data={igAccounts}/>
     </div>
   </div>
   </SidebarInset>
