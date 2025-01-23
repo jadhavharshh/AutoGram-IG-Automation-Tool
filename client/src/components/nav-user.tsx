@@ -29,6 +29,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { apiClient } from "@/lib/api-client"
+import { LOGOUT_API } from "@/utils/constants"
+import { toast } from "sonner"
+import { useNavigate } from "react-router-dom"
 
 export function NavUser({
   user,
@@ -39,7 +43,24 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    // Logout user
+    try {
+      const response = await apiClient.post(LOGOUT_API, {} , {withCredentials:true});
+      console.log(response);
+      navigate('/');
+      toast.success("Logged out successfully");
+    } catch (error : any) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+          console.log(error)
+          toast.error('An unexpected error occurred');
+      }
+      
+    }
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -98,8 +119,8 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut  />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

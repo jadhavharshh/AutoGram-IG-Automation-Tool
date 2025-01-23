@@ -212,3 +212,15 @@ export const getUserInfo = async (request : Request , response : Response , next
         )
     }
 }
+
+
+export const LogOut = async (request : Request , response : Response , next : NextFunction) : Promise<void> => {
+    try {
+        console.log('Log Out')
+        response.clearCookie('jwttoken');
+        response.status(200).json({message : 'Logged Out Successfully'});
+        return;
+    } catch (error) {
+        response.status(400).json({message : 'INTERNAL SERVER ERROR'})
+    }
+};
