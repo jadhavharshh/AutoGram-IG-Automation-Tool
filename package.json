@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@types/nodemailer": "^6.4.17",
+    "nodemailer": "^6.10.0",
+    "winston": "^3.17.0"
+  }
+}

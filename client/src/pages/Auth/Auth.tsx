@@ -1,8 +1,13 @@
 import { GalleryVerticalEnd } from "lucide-react"
 import BGImage from "@/assets/BG.jpg";
 import { LoginForm } from "@/components/ui/login-form"
+import { useState } from "react";
+import { ForgotPasswordForm } from "@/components/ui/Forgot-Password";
+
 
 export default function LoginPage() {
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+
   return (
     <div className="grid h-screen w-screen lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -16,7 +21,11 @@ export default function LoginPage() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+          {isForgotPassword ? (
+              <ForgotPasswordForm onBack={() => setIsForgotPassword(false)} />
+            ) : (
+              <LoginForm onForgotPassword={() => setIsForgotPassword(true)} />
+            )}
           </div>
         </div>
       </div>
