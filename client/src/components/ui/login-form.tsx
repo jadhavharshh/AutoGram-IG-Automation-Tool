@@ -16,8 +16,9 @@ import {
 
 export function LoginForm({
   className,
+  onForgotPassword,
   ...props
-}: React.ComponentPropsWithoutRef<"form">) {
+}: React.ComponentPropsWithoutRef<"form"> & { onForgotPassword: () => void }) {
   const navigate = useNavigate(); 
   const [isSignUp, setIsSignUp] = useState(false)
   const [value, setValue] = useState("")
@@ -154,7 +155,7 @@ export function LoginForm({
                 {!isSignUp && (
                     <a
                     href="#"
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
+                    className="ml-auto text-sm underline-offset-4 hover:underline" onClick={(e) => { e.preventDefault(); onForgotPassword();} }
                   >
                     Forgot your password?
                   </a>
