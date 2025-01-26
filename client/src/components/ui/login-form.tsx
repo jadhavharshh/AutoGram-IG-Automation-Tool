@@ -88,7 +88,7 @@ export function LoginForm({
         toast.error('Email and OTP are required');
         return;
       }
-      const response = await apiClient.post(VERIFY_OTP_API, { email, otp: value }, { withCredentials: true });
+      const response = await apiClient.post(VERIFY_OTP_API, { email, otp: value , type : 'signup'  }, { withCredentials: true });
       if (response.status === 200) {
         toast.success('OTP verified successfully');
         setUserInfo(response.data.user);

@@ -6,6 +6,7 @@ export const GET_USER_INFO = `${AUTH_API}/get-user-info`;
 export const VERIFY_OTP_API = `${AUTH_API}/verify-otp`;
 export const SEND_OTP_API = `${AUTH_API}/send-otp`;
 export const LOGOUT_API = `${AUTH_API}/log-out`;
+export const RESET_PASSWORD_API = `${AUTH_API}/reset-password`;
 
 export const IG_API = "api/ig/v1";
 export const ADD_INSTAGRAM_PROFILE = `${IG_API}/add-ig-account`;
