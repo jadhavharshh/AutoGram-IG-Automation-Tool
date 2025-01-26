@@ -11,8 +11,10 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
+import { useNavigate } from "react-router-dom"
 
 export function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -68,6 +70,7 @@ export function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
       if (response.status === 200) {
         toast.success('Password reset successfully. You can now log in with your new password.');
         // Optionally redirect to login
+        onBack();
       }
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.message) {
