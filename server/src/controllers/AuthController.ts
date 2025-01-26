@@ -170,10 +170,11 @@ export const sendOTPForgotPasswordHandler = async (request: Request, response: R
         user.otpExpires = otpExpires;
         await user.save();
 
+        response.status(200).json({ message: 'OTP sent successfully' });
+        
         // Send OTP via email
         await sendOTPForgotPassword(email, otp);
 
-        response.status(200).json({ message: 'OTP sent successfully' });
     } catch (error) {
         console.error('Failed to send OTP:', error);
         response.status(500).json({ error: 'Failed to send OTP' });
