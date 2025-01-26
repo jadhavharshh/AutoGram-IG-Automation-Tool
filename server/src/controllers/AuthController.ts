@@ -4,6 +4,7 @@ import User from '../models/UserModel';
 import { compare } from "bcrypt";
 import { sendOTP } from "./MailController";
 import crypto from 'crypto';
+import { sendOTPForgotPassword } from './MailController';
 
 // Create Token
 // Update the createToken function to include userId instead of password
@@ -88,7 +89,8 @@ export const SignUp = async (request: Request, response: Response, next: NextFun
 
 export const verifyOTP = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
-        const { email, otp } = request.body;
+        const { email, otp , type } = request.body;
+        console.log(otp, type , email);   
         const user = await User.findOne({ email });
 
         // Check if user exists and OTP matches and is not expired
@@ -96,31 +98,48 @@ export const verifyOTP = async (request: Request, response: Response, next: Next
             response.status(400).json({ message: 'Invalid or expired OTP.' });
             return; // Exit after sending response
         }
+        
+        
+        if (type === 'signup') {
+            // Mark user as verified for sign-up
+            user.isVerified = true;
+        } else if (type === 'resetPassword') {
+            // Additional logic for password reset if needed
+        }
 
         // Clear OTP fields and set isVerified to true
         user.otp = undefined;
         user.otpExpires = undefined;
-        user.isVerified = true; // Mark user as verified
         await user.save();
 
-        // Generate JWT token
-        const token = createToken(user.email, user.id);
+        if (type === 'signup') {
+            // Generate JWT token
+            const token = createToken(user.email, user.id);
 
-        // Set cookie with JWT token
-        response.cookie("jwttoken", token, {
-            maxAge: 3 * 24 * 60 * 60 * 1000, 
-            secure: true,
-            sameSite: "none",
-        });
+            // Set cookie with JWT token
+            response.cookie("jwttoken", token, {
+                maxAge: 1 * 24 * 60 * 60 * 1000, // 1 days
+                secure: true,
+                sameSite: "none",
+            });
 
-        // Respond with user info
-        response.status(200).json({
-            message: 'OTP verified successfully.',
-            user: {
-                email: user.email,
-                id: user.id
-            }
-        });
+            // Respond with user info
+            response.status(200).json({
+                message: 'OTP verified successfully. Your account is now verified.',
+                user: {
+                    email: user.email,
+                    id: user.id,
+                },
+            });
+        } else if (type === 'resetPassword') {
+            // Respond with success message for password reset
+            response.status(200).json({
+                message: 'OTP verified successfully. You can now reset your password.',
+            });
+
+        } else {
+            response.status(400).json({ message: 'Invalid verification type.' });
+        }
         return; // Exit after sending response
     } catch (error: any) {
         console.log(error);
@@ -129,6 +148,73 @@ export const verifyOTP = async (request: Request, response: Response, next: Next
         }
     }
 }
+
+export const sendOTPForgotPasswordHandler = async (request: Request, response: Response) => {
+    console.log("SEND OTP FORGOT PASSWORD HANDLER CALLED");
+    const { email } = request.body;
+    try {
+        // Generate OTP and expiration
+        const otp = crypto.randomInt(100000, 999999).toString();
+        const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+        // Find the user by email
+        const user = await User.findOne({ email });
+        if (!user) {
+            response.status(404).json({ message: 'User not found.' });
+            return;
+        }
+
+        // Update the user's OTP and expiration
+        user.otp = otp;
+        // console.log("THE NEW USER.OTP is", user.otp);
+        user.otpExpires = otpExpires;
+        await user.save();
+
+        // Send OTP via email
+        await sendOTPForgotPassword(email, otp);
+
+        response.status(200).json({ message: 'OTP sent successfully' });
+    } catch (error) {
+        console.error('Failed to send OTP:', error);
+        response.status(500).json({ error: 'Failed to send OTP' });
+    }
+};
+
+export const resetPasswordHandler = async (request : Request , response : Response , next : NextFunction) : Promise<void> => {
+    try {
+        console.log('Reset Password Handler')
+        const { email, newPassword, confirmPassword} = request.body;
+        console.log("BACKEND DATA RECEIVED", email, newPassword, confirmPassword);
+        // Validate input
+
+        if(!email || !newPassword || !confirmPassword ){
+            response.status(400).json({message : 'All fields are required'});
+            return;
+        }
+        if(newPassword !== confirmPassword){
+            response.status(400).json({message : 'Passwords do not match'});
+            return;
+        }
+        const user = await User.findOne({email});
+        if(!user){
+            response.status(400).json({message : 'User does not exist'});
+            return;
+        }
+
+        // Update user's password (pre-save hook will hash it)
+        user.password = newPassword;
+
+        // Clear OTP fields
+        user.otp = undefined;
+        user.otpExpires = undefined;
+        await user.save();
+
+        response.status(200).json({message : 'Password reset successfully. You can now log in with your new password.'});
+        return;
+    } catch (error) {
+        response.status(400).json({message : 'INTERNAL SERVER ERROR'})
+    }
+};
 
 export const SignIn = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
