@@ -1,94 +1,87 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
+// Use the stealth plugin to reduce detection.
 puppeteer.use(StealthPlugin());
 
+// Helper delay function.
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const scrapeFunction = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-  const MAX_PROFILES = 100; // Maximum profiles to scrape
-  const browser = await puppeteer.launch({ headless: false });
+
+  // Launch browser (set headless: false for debugging)
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
   const page = await browser.newPage();
 
-  await page.setUserAgent(
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-  );
-  await page.setViewport({ width: 1280, height: 800 });
-
   try {
-    console.log('🔍 Navigating to Instagram login page...');
+    // 1. Navigate to Instagram login page and log in.
     await page.goto('https://www.instagram.com/accounts/login/', { waitUntil: 'networkidle2' });
-
-    console.log('🔐 Entering credentials...');
+    await page.waitForSelector('input[name="username"]', { timeout: 15000 });
     await page.type('input[name="username"]', 'satxnishere', { delay: 100 });
     await page.type('input[name="password"]', 'TrialAccHarsh@1', { delay: 100 });
-    console.log('🚀 Submitting login form...');
     await page.click('button[type="submit"]');
-    await page.waitForNavigation({ waitUntil: 'networkidle2' });
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 20000 });
+    
+    // (Optional) Dismiss any pop-ups if needed.
 
-    console.log('✅ Logged in successfully!');
-    const hashtag = 'realestateagent';
-    const hashtagUrl = `https://www.instagram.com/explore/tags/${hashtag}`;
-
-    console.log(`➡️ Navigating to hashtag page: ${hashtagUrl}`);
-    await page.goto(hashtagUrl, { waitUntil: 'networkidle2' });
-
-    let profiles: string[] = [];
-    let previousHeight: number;
-
-    while (profiles.length < MAX_PROFILES) {
-      console.log(`🔄 Scraping profiles... Current count: ${profiles.length}`);
-
-      // Find all visible posts on the page
-      const postLinks = await page.$$eval('article a', (anchors) =>
-        anchors.map((a) => a.href).filter((href) => href.includes('/p/'))
+    // 2. Navigate to the hashtag page.
+    await page.goto('https://www.instagram.com/explore/tags/realestateagents/', { waitUntil: 'networkidle2' });
+    await page.waitForSelector('a._a6hd[href*="/p/"]', { timeout: 15000 });
+    
+    // Get the list of posts from the grid.
+    let posts = await page.$$('a._a6hd[href*="/p/"]');
+    console.log(`Found ${posts.length} posts on the grid.`);
+    
+    // 3. Loop through each post.
+    for (let i = 0; i < posts.length; i++) {
+      // Re-fetch post elements to avoid stale references.
+      posts = await page.$$('a._a6hd[href*="/p/"]');
+      if (i >= posts.length) break;
+      const post = posts[i];
+      
+      // Scroll the post into view and click to open the modal.
+      await post.evaluate(el => el.scrollIntoView());
+      await post.click();
+      console.log(`Clicked post ${i + 1}`);
+      
+      // Delay to allow modal content to load.
+      await delay(2000);
+      
+      // Wait for the modal dialog to appear.
+      await page.waitForSelector('div[role="dialog"]', { timeout: 15000 });
+      
+      // Wait for the username element to appear inside the modal.
+      await page.waitForSelector(
+        'div[role="dialog"] a[href^="/"]:not([href*="/p/"])',
+        { timeout: 15000 }
       );
-
-      for (const postLink of postLinks) {
-        if (profiles.length >= MAX_PROFILES) break;
-
+      
+      // Poll for the username until it is nonempty or max retries reached.
+      let username = '';
+      const maxRetries = 10;
+      for (let j = 0; j < maxRetries; j++) {
         try {
-          console.log(`🖱️ Clicking on post: ${postLink}`);
-          await page.goto(postLink, { waitUntil: 'networkidle2' });
-
-          // Extract the username from the post modal
-          const username = await page.evaluate(() => {
-            const usernameElement = document.querySelector('a[role="link"][href*="/"]');
-            return usernameElement ? usernameElement.getAttribute('href')?.split('/')[1] : null;
-          });
-
-          if (username && !profiles.includes(username)) {
-            console.log(`🆕 Found username: @${username}`);
-            profiles.push(username);
-          }
-        } catch (postError) {
-          console.error(`❌ Error processing post ${postLink}:`, postError);
+          username = await page.$eval(
+            'div[role="dialog"] a[href^="/"]:not([href*="/p/"])',
+            el => (el as HTMLElement).textContent?.trim() || ''
+          );
+        } catch (e) {
+          username = '';
         }
-
-        // Go back to the hashtag page
-        await page.goto(hashtagUrl, { waitUntil: 'networkidle2' });
+        if (username !== '') break;
+        await delay(500);
       }
-
-      // Scroll to load more posts
-      previousHeight = await page.evaluate(() => document.body.scrollHeight);
-      console.log('⬇️ Scrolling to load more posts...');
-      await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      const currentHeight = await page.evaluate(() => document.body.scrollHeight);
-      if (currentHeight === previousHeight) {
-        console.log('🚫 No more content to load. Exiting scroll loop.');
-        break;
-      }
+      console.log(`Username from post ${i + 1}: ${username}`);
+      
+      // Close the modal by pressing Escape.
+      await page.keyboard.press('Escape');
+      // Wait briefly before processing the next post.
+      await delay(2000);
     }
-
-    console.log(`🎉 Finished scraping. Total profiles collected: ${profiles.length}`);
-    response.json({ profiles });
-
   } catch (error) {
-    console.error('❌ An error occurred during scraping:', error);
-    next(error);
+    console.error('An error occurred during scraping:', error);
   } finally {
     await browser.close();
-    console.log('🛑 Browser closed.');
   }
-};
+}
