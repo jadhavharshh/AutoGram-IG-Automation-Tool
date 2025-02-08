@@ -11,7 +11,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export const scrapeFunction = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
 
   // Launch browser (set headless: false for debugging)
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+  const browser = await puppeteer.launch({ headless: false, args: ['--no-sandbox'] });
   const page = await browser.newPage();
 
   try {
