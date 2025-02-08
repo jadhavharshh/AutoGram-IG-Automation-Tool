@@ -14,7 +14,6 @@ import {
 import { useNavigate } from "react-router-dom"
 
 export function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
