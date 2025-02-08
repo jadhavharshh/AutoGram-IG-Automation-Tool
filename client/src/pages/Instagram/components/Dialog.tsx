@@ -11,11 +11,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { apiClient } from "@/lib/api-client"
-import { ADD_INSTAGRAM_PROFILE, GET_INSTAGRAM_PROFILES } from "@/utils/constants"
+import { ADD_INSTAGRAM_PROFILE } from "@/utils/constants"
 
 
 
-import { useState , useEffect } from 'react'
+import { useState } from 'react'
 import { toast } from "sonner"
 
 export function DialogDemo() {

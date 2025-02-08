@@ -59,7 +59,7 @@ const AuthRoute = ({ children } : ChildrenProps) => {
 
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const { userInfo, setUserInfo } = userAppStore();
   
   useEffect(() => {

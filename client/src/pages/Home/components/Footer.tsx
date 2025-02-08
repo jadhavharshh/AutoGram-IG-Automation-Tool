@@ -85,7 +85,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <p className="text-center text-3xl md:text-5xl lg:text-[12rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-950 to-neutral-200 to-neutral-800 inset-x-0 mt-20 pb-10 ">
+      <p className="text-center text-3xl md:text-5xl lg:text-[12rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-950  to-neutral-800 inset-x-0 mt-20 pb-10 ">
         AUTOGRAM
       </p>
     </div>
